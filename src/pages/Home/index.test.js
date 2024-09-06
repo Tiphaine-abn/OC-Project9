@@ -1,5 +1,6 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, getAllByTestId, getByTestId, render, screen, waitFor } from "@testing-library/react";
 import Home from "./index";
+import { api, DataProvider } from "../../contexts/DataContext";
 
 describe("When Form is created", () => {
   it("a list of fields card is displayed", async () => {
@@ -29,16 +30,49 @@ describe("When Form is created", () => {
 
 
 describe("When a page is created", () => {
-  it("a list of events is displayed", () => {
-    // to implement
+  it("a list of events is displayed", async () => {
+    // Surcharger la fonction qui fait appel à l'API
+    api.loadData = jest.fn().mockReturnValue(require('../../../public/events.json'));
+    render(<DataProvider><Home /></DataProvider >);
+    const eventSection = screen.getByTestId("events-section");
+    // Attendre que le DataProvider aie récupéré les données
+    await waitFor(() => {
+      getAllByTestId(eventSection, "card-testid");
+    });
+    //render(<Home />);
+    expect(eventSection).toBeInTheDocument();
+    getAllByTestId(eventSection, "card-testid").forEach((elem) => {
+      expect(elem).toBeInTheDocument();
+    })
   })
   it("a list a people is displayed", () => {
-    // to implement
+    render(<Home />);
+    const peopleSection = screen.getByTestId("people-section");
+    expect(peopleSection).toBeInTheDocument();
+    getAllByTestId(peopleSection, "peoplecard-testid").forEach((elem) => {
+      expect(elem).toBeInTheDocument();
+    })
   })
   it("a footer is displayed", () => {
-    // to implement
+    render(<Home />);
+    expect(screen.getByTestId("footer")).toBeInTheDocument();
   })
-  it("an event card, with the last event, is displayed", () => {
-    // to implement
+  it("an event card, with the last event, is displayed in the footer", async () => {
+    // Surcharger la fonction qui fait appel à l'API
+    api.loadData = jest.fn().mockReturnValue(require('../../../public/events.json'));
+    render(<DataProvider><Home /></DataProvider >);
+    const footer = screen.getByTestId("footer");
+    // Attendre que le DataProvider aie récupéré les données
+    await waitFor(() => {
+      getByTestId(footer, "card-testid");
+    });
+    // Vérifier que la carte de l'événement est bien présente
+    const eventCard = getByTestId(footer, "card-testid");
+    expect(eventCard).toBeInTheDocument();
+
+    // Vérifier que l'image de la carte est bien présente
+    const eventImage = getByTestId(footer, "card-image-testid");
+    const imageSrc = eventImage.getAttribute("src");
+    expect(imageSrc).toBeDefined;
   })
 });
