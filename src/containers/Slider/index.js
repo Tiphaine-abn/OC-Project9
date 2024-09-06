@@ -8,18 +8,30 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
-    new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
+    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
-
+  const nextCard = () => {
+    if (byDateDesc && byDateDesc.length > 0) {
+      setTimeout(() => {
+        setIndex(index < byDateDesc.length - 1 ? index + 1 : 0);
+      }, 5000);
+    }
+  };
   useEffect(() => {
-    const intervalId = setInterval(
-      () => {
-        setIndex(prevIndex => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0))
-      },
-      5000
-    );
-    return () => clearInterval(intervalId)
-  }, [byDateDesc])
+    nextCard();
+  }, [index, byDateDesc]);
+
+  /*
+      useEffect(() => {
+        const intervalId = setInterval(
+          () => {
+            setIndex(prevIndex => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0))
+          },
+          5000
+        );
+        return () => clearInterval(intervalId)
+      }, [byDateDesc])
+  */
 
   return (
     <div className="SlideCardList">
