@@ -33,13 +33,12 @@ describe("When a page is created", () => {
   it("a list of events is displayed", async () => {
     // Surcharger la fonction qui fait appel à l'API
     api.loadData = jest.fn().mockReturnValue(require('../../../public/events.json'));
-    render(<DataProvider><Home /></DataProvider >);
+    render(<DataProvider><Home /></DataProvider>);
     const eventSection = screen.getByTestId("events-section");
     // Attendre que le DataProvider aie récupéré les données
     await waitFor(() => {
       getAllByTestId(eventSection, "card-testid");
     });
-    //render(<Home />);
     expect(eventSection).toBeInTheDocument();
     getAllByTestId(eventSection, "card-testid").forEach((elem) => {
       expect(elem).toBeInTheDocument();
@@ -49,9 +48,7 @@ describe("When a page is created", () => {
     render(<Home />);
     const peopleSection = screen.getByTestId("people-section");
     expect(peopleSection).toBeInTheDocument();
-    getAllByTestId(peopleSection, "peoplecard-testid").forEach((elem) => {
-      expect(elem).toBeInTheDocument();
-    })
+    expect(screen.getByText("Jean-baptiste")).toBeInTheDocument;
   })
   it("a footer is displayed", () => {
     render(<Home />);

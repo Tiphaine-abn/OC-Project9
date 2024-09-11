@@ -21,18 +21,6 @@ const Slider = () => {
     nextCard();
   }, [index, byDateDesc]);
 
-  /*
-      useEffect(() => {
-        const intervalId = setInterval(
-          () => {
-            setIndex(prevIndex => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0))
-          },
-          5000
-        );
-        return () => clearInterval(intervalId)
-      }, [byDateDesc])
-  */
-
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (

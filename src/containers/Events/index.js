@@ -26,17 +26,6 @@ const EventList = () => {
     }
     return false;
   });
-  // (CONDITION ? SIVRAI : SIFAUX) || []
-  /*
-  if (type) {
-    filteredEvents = data?.events.filter
-  } else {
-    filteredEvents = data?.events
-  }
-  if (!filteredEvents) {
-    filteredEvents = []
-  }
-  */
   const changeType = (evtType) => {
     setCurrentPage(1);
     setType(evtType);
