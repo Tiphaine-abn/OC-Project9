@@ -24,7 +24,8 @@ export const DataProvider = ({ children }) => {
     try {
       const jsonData = await api.loadData();
       setData(jsonData);
-      setLast(jsonData.events[0])
+      const sortedJsonData = jsonData.events.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setLast(sortedJsonData[0])
     } catch (err) {
       setError(err);
     }
